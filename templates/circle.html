@@ -85,18 +85,18 @@
                 return;
             }
 
-            // Find the center of the circle
+           
             const center = findCenter(points);
 
-            // Calculate the distance from the center to each point
+            
             const distances = points.map(point =>
                 Math.sqrt(Math.pow(center.x - point.x, 2) + Math.pow(center.y - point.y, 2))
             );
 
-            // Determine the average distance as the radius
+            
             const radius = distances.reduce((total, distance) => total + distance, 0) / distances.length;
 
-            // Calculate standard deviation of radius values
+           
             const avgRadius = distances.reduce((total, distance) => total + distance, 0) / distances.length;
             const deviation = Math.sqrt(distances.reduce((total, distance) => total + Math.pow(distance - avgRadius, 2), 0) / distances.length);
 
@@ -124,7 +124,7 @@
             resultDiv.textContent = `Perfectness: ${perfectness.toFixed(2)}%`;
         }
 
-        // Helper function to find the center of the circle
+       
         function findCenter(points) {
             const x = points.reduce((total, point) => total + point.x, 0) / points.length;
             const y = points.reduce((total, point) => total + point.y, 0) / points.length;
