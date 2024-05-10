@@ -1,1 +1,0 @@
-<p>Welcome to the main page. Click <a href="{{ url_for('page2') }}">here</a> to go to Page 2.</p>
