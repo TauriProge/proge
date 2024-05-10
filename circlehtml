@@ -2,11 +2,9 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Page 2</title>
+    <title>Circlequest</title>
 </head>
 <body>
-    <h1>Page 2</h1>
-    <a href="{{ url_for('index') }}">Go back to Main Page</a>
+    <h1>Circlegame</h1>
 </body>
 </html>
