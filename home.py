@@ -11,5 +11,9 @@ def index():
 def circle():
     return render_template("circle.html")
 
+@home.route("/symmetry")
+def symmetry():
+    return render_template("symmetry.html")
+
 if __name__ == '__main__':
     home.run(debug=True)
