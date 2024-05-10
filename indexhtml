@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Symmetrycraft: Circlequest</title>
+</head>
+<body>
+    <h1>Home</h1>
+    <p><a href="{{ url_for('circle') }}">Go to circle</a></p>
+</body>
+</html>
