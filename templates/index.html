@@ -2,12 +2,26 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Symmetrycraft: Circlequest</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&display=swap" rel="stylesheet">
 </head>
 <body>
-    <h1>Home</h1>
-    <p><a href="{{ url_for('circle') }}">Go to CircleCraft</a></p>
-    <p><a href="{{ url_for('symmetry') }}">Go to Symmetryquest</a></p>
+    <div class="header">
+        <h1>Symmetryquest: CircleCraft</h1>
+    </div>
+    <div class="row">
+        <div class="column">
+            <div class="cir">
+                <h2><a href="{{ url_for('circle') }}">Go to CircleCraft</a></h2>
+            </div>
+        </div>
+        <div class="column">
+            <div class="sym">
+                <h2><a href="{{ url_for('symmetry') }}">Go to Symmetryquest</a></h2>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
