@@ -7,21 +7,23 @@ body {
     font-family: "Orbitron";
 }
 
-a {
+a:link, a:visited {
     text-decoration: none;
+    display: inline-block;
+    padding: 30%;
 }
 
-.header {
-    background-color: #007c38;
-    padding: 20px;
-    text-align: center;
-    font-size: larger;
+a:hover, a:active {
+background-color: rgb(187, 177, 177, 0.7);
 }
+
 
 .column {
     float: left;
     width: 50%;;
     padding: 15px;
+    margin-top: 1vw;
+    
 }
 
 .row::after {
@@ -32,23 +34,51 @@ a {
 
 @media screen and (max-width:600px) {
     .column {
-      width: 100%;
+        width: 100%;
     }
+}
+
+.header {
+    background-color: #007c38;
+    padding: 20px;
+    text-align: center;
+    font-size: larger;
+    border-color: black;
+    border-radius: 2px;
+    border-style: solid;
 }
 
 .cir {
     font-weight: bold;
     color: blue;
-    font-size: large;
-    text-align: center;
+    font-size: 1.5vw;
+    text-align: top;
     margin-left: 2vw;
     background-color: antiquewhite;
+    border-color: black;
+    border-radius: 2px;
+    border-style: double;
+    background-image: url("ring.png");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-attachment: scroll;
+    background-size: cover;
+    background-position-y: top;
 }
 .sym {
     font-weight: bold;
     color: blue;
-    font-size: large;
-    text-align: center;
+    font-size: 1.5vw;
+    text-align: top;
     margin-right: 2vw;
     background-color: antiquewhite;
+    border-color: black;
+    border-radius: 2px;
+    border-style: double;
+    background-image: url("symmet.png");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-attachment: scroll;
+    background-size: cover;
+    background-position-y: -30px;
 }
