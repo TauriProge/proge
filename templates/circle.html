@@ -24,7 +24,7 @@
             color: #fff;
             border: none;
             cursor: pointer;
-            border-radius: 5px;
+            border-radius: 10px;
         }
     </style>
 </head>
@@ -82,6 +82,7 @@
         function calculatePerfectness() {
             if (points.length < 3) {
                 resultDiv.textContent = "Draw a complete circle!";
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
                 return;
             }
 
