@@ -2,10 +2,139 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Circlequest</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Circle Drawing Game</title>
+    <style>
+        #canvas {
+            border: 2px solid black;
+            margin: 20px auto;
+            display: block;
+        }
+        #result {
+            text-align: center;
+            font-size: 20px;
+            margin-top: 10px;
+        }
+        #reset-btn {
+            display: block;
+            margin: 20px auto;
+            padding: 10px 20px;
+            font-size: 18px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+    </style>
 </head>
+
 <body>
     <h1>Circlegame</h1>
     <p><a href="{{ url_for('index') }}">Back to home</a></p>
+    <canvas id="canvas" width="400" height="400"></canvas>
+    <div id="result"></div>
+    <button id="reset-btn">Reset</button>
+    
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        const resultDiv = document.getElementById('result');
+        const resetBtn = document.getElementById('reset-btn');
+
+        let isDrawing = false;
+        let points = [];
+
+        canvas.addEventListener('mousedown', (e) => {
+            isDrawing = true;
+            points = [];
+        });
+
+        canvas.addEventListener('mousemove', draw);
+
+        canvas.addEventListener('mouseup', () => {
+            isDrawing = false;
+            calculatePerfectness();
+        });
+        canvas.addEventListener('mouseout', () => {
+            isDrawing = false;
+            calculatePerfectness();
+        });
+
+        function draw(e) {
+            if (!isDrawing) return;
+
+            const x = e.offsetX;
+            const y = e.offsetY;
+
+            points.push({ x, y });
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.beginPath();
+            ctx.moveTo(points[0].x, points[0].y);
+            for (let i = 1; i < points.length; i++) {
+                ctx.lineTo(points[i].x, points[i].y);
+            }
+            ctx.closePath();
+            ctx.stroke();
+        }
+
+        function calculatePerfectness() {
+            if (points.length < 3) {
+                resultDiv.textContent = "Draw a complete circle!";
+                return;
+            }
+
+            // Find the center of the circle
+            const center = findCenter(points);
+
+            // Calculate the distance from the center to each point
+            const distances = points.map(point =>
+                Math.sqrt(Math.pow(center.x - point.x, 2) + Math.pow(center.y - point.y, 2))
+            );
+
+            // Determine the average distance as the radius
+            const radius = distances.reduce((total, distance) => total + distance, 0) / distances.length;
+
+            // Calculate standard deviation of radius values
+            const avgRadius = distances.reduce((total, distance) => total + distance, 0) / distances.length;
+            const deviation = Math.sqrt(distances.reduce((total, distance) => total + Math.pow(distance - avgRadius, 2), 0) / distances.length);
+
+            // Calculate perfectness score based on deviation
+            const perfectness = Math.max(0, 100 - (deviation / avgRadius) * 100);
+
+            // Draw imaginary radiuses from the center to the outline points
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.beginPath();
+            ctx.moveTo(points[0].x, points[0].y);
+            for (let i = 1; i < points.length; i++) {
+                ctx.lineTo(points[i].x, points[i].y);
+            }
+            ctx.closePath();
+            ctx.stroke();
+
+            ctx.beginPath();
+            ctx.strokeStyle = 'red';
+            points.forEach(point => {
+                ctx.moveTo(center.x, center.y);
+                ctx.lineTo(point.x, point.y);
+            });
+            ctx.stroke();
+
+            resultDiv.textContent = `Perfectness: ${perfectness.toFixed(2)}%`;
+        }
+
+        // Helper function to find the center of the circle
+        function findCenter(points) {
+            const x = points.reduce((total, point) => total + point.x, 0) / points.length;
+            const y = points.reduce((total, point) => total + point.y, 0) / points.length;
+            return { x, y };
+        }
+
+        resetBtn.addEventListener('click', () => {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            resultDiv.textContent = '';
+        });
+    </script>
 </body>
 </html>
