@@ -2,45 +2,54 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='game.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&display=swap" rel="stylesheet">
     <title>Symmetryquest</title>
-</head>
-<style>
-    body {
-        font-family: Arial, sans-serif;
-    }
+    <style>
+        .cent {
+            text-align: center;
+        }
 
-    .container {
-        text-align: center;
-    }
+        #canvas {
+            border: 1px solid black;
+        }
+        #result {
+            font-size: 20px;
+            margin-top: 10px;
+        }
 
-    canvas {
-        border: 1px solid black;
-    }
-
-    button {
-        margin-top: 10px;
-        padding: 5px 10px;
-        background-color: #007bff;
-        color: white;
-        border: none;
-        cursor: pointer;
-    }
-</style>
+        #resetBtn {
+            display: block;
+            margin: 20px auto;
+            padding: 10px 20px;
+            font-size: 18px;
+            background-color: #ec0808;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            border-radius: 10px;
+            font-family: "Orbitron";
+        }
+    </style>
 </head>
 <body>
-    <h1>Symmetryquest</h1>
-    <p><a href="{{ url_for('index') }}">Back to home</a></p>
-    <div class="container">
-        <canvas id="canvas" width="800" height="400"></canvas>
-        <button id="clearBtn">Clear</button>
-        <p id="symmetryPercentage">Symmetry: 0%</p>
+    <div class="cent">
+        <div class="header">
+            <h1>Symmetryquest</h1>
+            <p><a href="{{ url_for('index') }}">Back to home</a></p>
+        </div>
+    
+        <canvas id="canvas" width="600" height="400"></canvas>
+        <p id="result">Symmetry: 0%</p>
+        <button id="resetBtn">Reset</button>
     </div>
 
     <script>
         const canvas = document.getElementById('canvas');
         const ctx = canvas.getContext('2d');
-        const clearBtn = document.getElementById('clearBtn');
-        const symmetryPercentage = document.getElementById('symmetryPercentage');
+        const resetBtn = document.getElementById('resetBtn');
+        const result = document.getElementById('result');
 
         let isDrawing = false;
         let lastX = 0;
@@ -49,8 +58,11 @@
         drawSymmetryLine();
         drawLeftShape();
         canvas.addEventListener('mousedown', startDrawing);
+
         canvas.addEventListener('mousemove', draw);
+
         canvas.addEventListener('mouseup', stopDrawing);
+
         canvas.addEventListener('mouseout', stopDrawing);
 
         function startDrawing(e) {
@@ -70,7 +82,7 @@
             [lastX, lastY] = [e.offsetX, e.offsetY];
 
             const similarity = calculateSymmetry();
-            symmetryPercentage.textContent = `Symmetry: ${similarity.toFixed(2)}%`;
+            result.textContent = `Symmetry: ${similarity.toFixed(2)}%`;
         }
 
         function stopDrawing() {
@@ -139,9 +151,9 @@
             return binaryImage;
         }
 
-        clearBtn.addEventListener('click', () => {
+        resetBtn.addEventListener('click', () => {
             ctx.clearRect(canvas.width / 2, 0, canvas.width / 2, canvas.height);
-            symmetryPercentage.textContent = `Symmetry: 0%`;
+            result.textContent = `Symmetry: 0%`;
             drawSymmetryLine();
             drawLeftShape();
         });

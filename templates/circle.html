@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{{ url_for('static', filename='game.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&display=swap" rel="stylesheet">
     <title>Circlecraft</title>
     <style>
         #canvas {
@@ -27,14 +28,16 @@
             border: none;
             cursor: pointer;
             border-radius: 10px;
+            font-family: "Orbitron";
         }
     </style>
 </head>
 
 <body>
-    <h1 class="header">Circlecraft
+    <div class="header">    
+        <h1>Circlecraft</h1>
         <p><a href="{{ url_for('index') }}">Back to home</a></p>
-    </h1>
+    </div>
     
     
     <canvas id="canvas" width="540" height="540"></canvas>
