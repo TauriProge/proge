@@ -15,6 +15,7 @@ a:link, a:visited {
 
 a:hover, a:active {
 background-color: rgb(187, 177, 177, 0.7);
+color: red;
 }
 
 

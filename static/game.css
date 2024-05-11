@@ -1,0 +1,24 @@
+body {
+    background-color: rgb(26, 190, 94);
+    font-family: "Orbitron";
+}
+.header {
+    background-color: #007c38;
+    padding-top: 1vw;
+    text-align: center;
+    font-size: larger;
+    border-color: black;
+    border-radius: 2px;
+    border-style: solid;
+}
+
+a:link, a:visited {
+    text-decoration: none;
+    display: inline-block;
+    color: greenyellow;
+}
+
+a:hover, a:active {
+background-color: rgba(255, 255, 255, 0.493);
+color: red;
+}
