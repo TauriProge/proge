@@ -90,6 +90,7 @@
             if (points.length < 10) {
                 resultDiv.textContent = "Draw a complete circle!";
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
+                points = []
                 return;
             }
 
