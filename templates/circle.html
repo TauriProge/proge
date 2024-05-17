@@ -45,6 +45,7 @@
     <button id="reset-btn">Reset</button>
     
     <script>
+
         const canvas = document.getElementById('canvas');
         const ctx = canvas.getContext('2d');
         const resultDiv = document.getElementById('result');
@@ -114,13 +115,8 @@
             const center = findCenter(points);
 
             
-            const distances = points.map(point =>
-                Math.sqrt(Math.pow(center.x - point.x, 2) + Math.pow(center.y - point.y, 2))
+            const distances = points.map(point => Math.sqrt(Math.pow(center.x - point.x, 2) + Math.pow(center.y - point.y, 2))
             );
-
-            
-            const radius = distances.reduce((total, distance) => total + distance, 0) / distances.length;
-
            
             const avgRadius = distances.reduce((total, distance) => total + distance, 0) / distances.length;
             const deviation = Math.sqrt(distances.reduce((total, distance) => total + Math.pow(distance - avgRadius, 2), 0) / distances.length);
