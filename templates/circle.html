@@ -7,12 +7,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&display=swap" rel="stylesheet">
     <title>CircleCraft</title>
     <style>
-        body {
-            background-color: #f0f0f0;
-            font-family: 'Orbitron', sans-serif;
-            text-align: center;
-            padding-top: 20px;
-        }
         #canvas {
             border: 3px double rgb(11, 230, 58);
             margin: 20px auto;
@@ -20,9 +14,9 @@
             background-color: rgb(0, 0, 0);
         }
         #result {
+            text-align: center;
             font-size: 20px;
             margin-top: 10px;
-            color: #333;
         }
         #reset-btn {
             display: block;
@@ -34,19 +28,7 @@
             border: none;
             cursor: pointer;
             border-radius: 10px;
-        }
-        .header {
-            margin-bottom: 20px;
-        }
-        .header h1 {
-            margin: 0;
-        }
-        .header a {
-            color: #007bff;
-            text-decoration: none;
-        }
-        .header a:hover {
-            text-decoration: underline;
+            font-family: "Orbitron";
         }
     </style>
 </head>
@@ -57,11 +39,13 @@
         <p><a href="{{ url_for('index') }}">Back to home</a></p>
     </div>
     
-    <canvas id="canvas" width="1920" height="1080"></canvas>
+    
+    <canvas id="canvas" width="1920" height="720"></canvas>
     <div id="result"></div>
     <button id="reset-btn">Reset</button>
     
     <script>
+
         const canvas = document.getElementById('canvas');
         const ctx = canvas.getContext('2d');
         const resultDiv = document.getElementById('result');
@@ -69,30 +53,12 @@
 
         let isDrawing = false;
         let points = [];
-        let lastPoint = { x: null, y: null };
 
         canvas.addEventListener('mousedown', (e) => {
             isDrawing = true;
-            const x = e.offsetX;
-            const y = e.offsetY;
-            lastPoint = { x, y };
-            points.push(lastPoint);
-            draw();
         });
 
-        canvas.addEventListener('mousemove', (e) => {
-            if (!isDrawing) return;
-
-            const x = e.offsetX;
-            const y = e.offsetY;
-
-            const distance = Math.sqrt(Math.pow(lastPoint.x - x, 2) + Math.pow(lastPoint.y - y, 2));
-            if (distance >= 1) {
-                lastPoint = { x, y };
-                points.push(lastPoint);
-                draw();
-            }
-        });
+        canvas.addEventListener('mousemove', draw);
 
         canvas.addEventListener('mouseup', () => {
             isDrawing = false;
@@ -102,21 +68,29 @@
         canvas.addEventListener('mouseout', () => {
             isDrawing = false;
             if (points.length > 10) {
-                calculatePerfectness();
-            } else if (points.length > 0 && points.length < 10) {
+            calculatePerfectness();
+            }
+            if (points.length > 0 && points.length < 10) {
                 resultDiv.textContent = "Don't draw outside the border!";
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
-                points = [];
+                points = []
             }
-        });
+            });
 
         resetBtn.addEventListener('click', () => {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
+            points = []
             resultDiv.textContent = '';
-            points = [];
         });
 
-        function draw() {
+        function draw(e) {
+            if (!isDrawing) return;
+
+            const x = e.offsetX;
+            const y = e.offsetY;
+
+            points.push({ x, y });
+
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             ctx.beginPath();
             ctx.moveTo(points[0].x, points[0].y);
@@ -124,8 +98,8 @@
                 ctx.lineTo(points[i].x, points[i].y);
             }
             ctx.closePath();
-            ctx.strokeStyle = "Green";
-            ctx.lineWidth = 2;
+            ctx.strokeStyle = "Green"
+            ctx.lineWidth = 2
             ctx.stroke();
         }
 
@@ -133,17 +107,24 @@
             if (points.length <= 10) {
                 resultDiv.textContent = "Draw a complete circle!";
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
-                points = [];
+                points = []
                 return;
             }
 
+           
             const center = findCenter(points);
-            const radii = calculateRadii(center);
-            const avgRadius = radii.reduce((total, radius) => total + radius, 0) / radii.length;
-            const deviation = Math.sqrt(radii.reduce((total, radius) => total + Math.pow(radius - avgRadius, 2), 0) / radii.length);
 
+            //Leiab raadiuse pikkuse
+            const distances = points.map(point => Math.sqrt(Math.pow(center.x - point.x, 2) + Math.pow(center.y - point.y, 2))
+            );
+
+           //Leiab keskmise raadiuse
+            const avgRadius = distances.reduce((total, distance) => total + distance, 0) / distances.length;
+           // ???
+            const deviation = Math.sqrt(distances.reduce((total, distance) => total + Math.pow(distance - avgRadius, 2), 0) / distances.length);
             const perfectness = Math.max(0, 100 - (deviation / avgRadius) * 100);
 
+            // Draw imaginary radiuses from the center to the outline points
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             ctx.beginPath();
             ctx.moveTo(points[0].x, points[0].y);
@@ -151,32 +132,28 @@
                 ctx.lineTo(points[i].x, points[i].y);
             }
             ctx.closePath();
-            ctx.strokeStyle = "Green";
-            ctx.lineWidth = 2;
             ctx.stroke();
 
             ctx.beginPath();
             ctx.strokeStyle = 'red';
-            ctx.lineWidth = 1;
-            ctx.arc(center.x, center.y, avgRadius, 0, 2 * Math.PI);
+            points.forEach(point => {
+                ctx.moveTo(center.x, center.y);
+                ctx.lineTo(point.x, point.y);
+            });
             ctx.stroke();
 
             resultDiv.textContent = `Perfectness: ${perfectness.toFixed(2)}%`;
-            points = [];
+            points = []
         }
 
+       
         function findCenter(points) {
             const x = points.reduce((total, point) => total + point.x, 0) / points.length;
             const y = points.reduce((total, point) => total + point.y, 0) / points.length;
             return { x, y };
         }
 
-        function calculateRadii(center) {
-            const radii = points.map(point => {
-                return Math.sqrt(Math.pow(center.x - point.x, 2) + Math.pow(center.y - point.y, 2));
-            });
-            return radii;
-        }
+
     </script>
 </body>
 </html>
