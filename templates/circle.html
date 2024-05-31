@@ -40,7 +40,7 @@
     </div>
     
     
-    <canvas id="canvas" width="1920" height="720"></canvas>
+    <canvas id="canvas" width= '1920' height= '800'></canvas>
     <div id="result"></div>
     <button id="reset-btn">Reset</button>
     
@@ -124,11 +124,23 @@
            // Deviatasiooni kaudu perfectness
             const deviation = Math.sqrt(distances.reduce((total, distance) => total + Math.pow(distance - avgRadius, 2), 0) / distances.length);
             const perfectness = Math.max(0,100 - deviation)
+
+            //Leiab kas ring on ikka ringilaadne
+            
+
             // Perfektne ring
             ctx.beginPath();
             ctx.strokeStyle = 'red';
             ctx.arc(points.reduce((total, point) => total + point.x, 0) / points.length, points.reduce((total, point) => total + point.y, 0) / points.length,avgRadius, 0, Math.PI * 2)
             ctx.stroke();
+            //Debug jooned
+            // ctx.beginPath();
+            // ctx.strokeStyle = 'red';
+            // points.forEach(point => {
+            //     ctx.moveTo(center.x, center.y);
+            //     ctx.lineTo(point.x, point.y);
+            // });
+            // ctx.stroke();
 
             resultDiv.textContent = `Perfectness: ${perfectness.toFixed(2)}%`;
             points = []
