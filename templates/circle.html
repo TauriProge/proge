@@ -75,22 +75,22 @@
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
                 points = []
             }
-            });
-
+        });
+        
         resetBtn.addEventListener('click', () => {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             points = []
             resultDiv.textContent = '';
         });
-
+        
         function draw(e) {
             if (!isDrawing) return;
 
             const x = e.offsetX;
             const y = e.offsetY;
-
+            
             points.push({ x, y });
-
+            
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             ctx.beginPath();
             ctx.moveTo(points[0].x, points[0].y);
@@ -102,6 +102,11 @@
             ctx.lineWidth = 2
             ctx.stroke();
         }
+        function findCenter(points) {
+            const x = points.reduce((total, point) => total + point.x, 0) / points.length;
+            const y = points.reduce((total, point) => total + point.y, 0) / points.length;
+            return { x, y };
+        }
 
         function calculatePerfectness() {
             if (points.length <= 10) {
@@ -110,49 +115,24 @@
                 points = []
                 return;
             }
-
-           
             const center = findCenter(points);
-
             //Leiab raadiuse pikkuse
             const distances = points.map(point => Math.sqrt(Math.pow(center.x - point.x, 2) + Math.pow(center.y - point.y, 2))
             );
-
            //Leiab keskmise raadiuse
             const avgRadius = distances.reduce((total, distance) => total + distance, 0) / distances.length;
-           // ???
+           // Deviatasiooni kaudu perfectness
             const deviation = Math.sqrt(distances.reduce((total, distance) => total + Math.pow(distance - avgRadius, 2), 0) / distances.length);
-            const perfectness = Math.max(0, 100 - (deviation / avgRadius) * 100);
-
-            // Draw imaginary radiuses from the center to the outline points
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            ctx.beginPath();
-            ctx.moveTo(points[0].x, points[0].y);
-            for (let i = 1; i < points.length; i++) {
-                ctx.lineTo(points[i].x, points[i].y);
-            }
-            ctx.closePath();
-            ctx.stroke();
-
+            const perfectness = Math.max(0,100 - deviation)
+            // Perfektne ring
             ctx.beginPath();
             ctx.strokeStyle = 'red';
-            points.forEach(point => {
-                ctx.moveTo(center.x, center.y);
-                ctx.lineTo(point.x, point.y);
-            });
+            ctx.arc(points.reduce((total, point) => total + point.x, 0) / points.length, points.reduce((total, point) => total + point.y, 0) / points.length,avgRadius, 0, Math.PI * 2)
             ctx.stroke();
 
             resultDiv.textContent = `Perfectness: ${perfectness.toFixed(2)}%`;
             points = []
         }
-
-       
-        function findCenter(points) {
-            const x = points.reduce((total, point) => total + point.x, 0) / points.length;
-            const y = points.reduce((total, point) => total + point.y, 0) / points.length;
-            return { x, y };
-        }
-
 
     </script>
 </body>
