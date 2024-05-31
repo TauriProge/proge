@@ -50,39 +50,55 @@
         const ctx = canvas.getContext('2d');
         const resultDiv = document.getElementById('result');
         const resetBtn = document.getElementById('reset-btn');
+        startp = null
 
         let isDrawing = false;
         let points = [];
 
+        function clearall() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            points = []
+            startp = null
+            isDrawing = false
+        }
         canvas.addEventListener('mousedown', (e) => {
             isDrawing = true;
+            const x = e.offsetX;
+            const y = e.offsetY;
+            startp = { x, y };
         });
-
+        
         canvas.addEventListener('mousemove', draw);
-
+        
         canvas.addEventListener('mouseup', () => {
             isDrawing = false;
-            calculatePerfectness();
+            if (points.length > 1){
+                calculatePerfectness();
+            }
         });
 
         canvas.addEventListener('mouseout', () => {
             isDrawing = false;
-            if (points.length > 10) {
+            if (points.length >= 20) {
             calculatePerfectness();
             }
-            if (points.length > 0 && points.length < 10) {
+            if (points.length > 0 && points.length < 20) {
                 resultDiv.textContent = "Don't draw outside the border!";
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                points = []
+                clearall()
             }
         });
         
         resetBtn.addEventListener('click', () => {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            points = []
+            clearall()
             resultDiv.textContent = '';
         });
         
+        function findCenter(points) {
+            const x = points.reduce((total, point) => total + point.x, 0) / points.length;
+            const y = points.reduce((total, point) => total + point.y, 0) / points.length;
+            return { x, y };
+        }
+
         function draw(e) {
             if (!isDrawing) return;
 
@@ -90,7 +106,11 @@
             const y = e.offsetY;
             
             points.push({ x, y });
-            
+            //Replikatsioon calculateSymmetry'st et leida pidevalt avgRadius
+            const center = findCenter(points);
+            const distances = points.map(point => Math.sqrt(Math.pow(center.x - point.x, 2) + Math.pow(center.y - point.y, 2)));
+            const avgRadius = distances.reduce((total, distance) => total + distance, 0) / distances.length;
+
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             ctx.beginPath();
             ctx.moveTo(points[0].x, points[0].y);
@@ -101,33 +121,33 @@
             ctx.strokeStyle = "Green"
             ctx.lineWidth = 2
             ctx.stroke();
-        }
-        function findCenter(points) {
-            const x = points.reduce((total, point) => total + point.x, 0) / points.length;
-            const y = points.reduce((total, point) => total + point.y, 0) / points.length;
-            return { x, y };
+            if (avgRadius < 20 && points.length > 20){
+                resultDiv.textContent = "Draw a bigger circle, faster!";
+                clearall()
+                return;
+            }
+            // Vaatab, kas kursor on lähedal algpunktile ja autocalculate'b
+            const endvec = Math.sqrt(Math.pow(startp.x - x, 2) + Math.pow(startp.y - y, 2));
+            if (endvec <= 20 && avgRadius > 20) {
+                isDrawing = false;
+                calculatePerfectness();
+                return;
+            }
         }
 
         function calculatePerfectness() {
-            if (points.length <= 10) {
-                resultDiv.textContent = "Draw a complete circle!";
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                points = []
+            if (points.length <= 20) {
+                resultDiv.textContent = "Draw for longer!";
+                clearall()
                 return;
-            }
+            } 
             const center = findCenter(points);
             //Leiab raadiuse pikkuse
-            const distances = points.map(point => Math.sqrt(Math.pow(center.x - point.x, 2) + Math.pow(center.y - point.y, 2))
-            );
-           //Leiab keskmise raadiuse
+            const distances = points.map(point => Math.sqrt(Math.pow(center.x - point.x, 2) + Math.pow(center.y - point.y, 2)));
+            //Leiab keskmise raadiuse
             const avgRadius = distances.reduce((total, distance) => total + distance, 0) / distances.length;
-           // Deviatasiooni kaudu perfectness
+            // Deviatasiooni kaudu perfectness
             const deviation = Math.sqrt(distances.reduce((total, distance) => total + Math.pow(distance - avgRadius, 2), 0) / distances.length);
-            const perfectness = Math.max(0,100 - deviation)
-
-            //Leiab kas ring on ikka ringilaadne
-            
-
             // Perfektne ring
             ctx.beginPath();
             ctx.strokeStyle = 'red';
@@ -137,13 +157,17 @@
             // ctx.beginPath();
             // ctx.strokeStyle = 'red';
             // points.forEach(point => {
-            //     ctx.moveTo(center.x, center.y);
-            //     ctx.lineTo(point.x, point.y);
-            // });
-            // ctx.stroke();
+                //     ctx.moveTo(center.x, center.y);
+                //     ctx.lineTo(point.x, point.y);
+                // });
+                // ctx.stroke();
+                
+            const perfectness = Math.max(0,100 - deviation)
 
             resultDiv.textContent = `Perfectness: ${perfectness.toFixed(2)}%`;
             points = []
+            startp = null
+            isDrawing = false
         }
 
     </script>
