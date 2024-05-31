@@ -121,14 +121,15 @@
             ctx.strokeStyle = "Green"
             ctx.lineWidth = 2
             ctx.stroke();
-            if (avgRadius < 20 && points.length > 20){
-                resultDiv.textContent = "Draw a bigger circle, faster!";
-                clearall()
-                return;
-            }
+
+            if (avgRadius < 13 && points.length > 30){
+            resultDiv.textContent = "Draw a bigger circle, faster!";
+            clearall()
+            return;
+        }
             // Vaatab, kas kursor on lähedal algpunktile ja autocalculate'b
             const endvec = Math.sqrt(Math.pow(startp.x - x, 2) + Math.pow(startp.y - y, 2));
-            if (endvec <= 20 && avgRadius > 20) {
+            if (endvec <= 20 && avgRadius > 30) {
                 isDrawing = false;
                 calculatePerfectness();
                 return;
@@ -148,6 +149,11 @@
             const avgRadius = distances.reduce((total, distance) => total + distance, 0) / distances.length;
             // Deviatasiooni kaudu perfectness
             const deviation = Math.sqrt(distances.reduce((total, distance) => total + Math.pow(distance - avgRadius, 2), 0) / distances.length);
+            if (avgRadius <= 32) {
+                resultDiv.textContent = "Draw a bigger circle!";
+                clearall()
+                return;
+            } 
             // Perfektne ring
             ctx.beginPath();
             ctx.strokeStyle = 'red';
@@ -157,10 +163,10 @@
             // ctx.beginPath();
             // ctx.strokeStyle = 'red';
             // points.forEach(point => {
-                //     ctx.moveTo(center.x, center.y);
-                //     ctx.lineTo(point.x, point.y);
-                // });
-                // ctx.stroke();
+            //         ctx.moveTo(center.x, center.y);
+            //         ctx.lineTo(point.x, point.y);
+            //     });
+            //     ctx.stroke();
                 
             const perfectness = Math.max(0,100 - deviation)
 
