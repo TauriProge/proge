@@ -21,7 +21,7 @@
             margin-top: 10px;
         }
 
-        #resetBtn {
+        #reset-btn {
             display: block;
             margin: 20px auto;
             padding: 10px 20px;
@@ -42,63 +42,20 @@
             <p><a href="{{ url_for('index') }}">Back to home</a></p>
         </div>
     
-        <canvas id="canvas" width="600" height="400"></canvas>
-        <div id="result"></div>
-        <button id="resetBtn">Reset</button>
+        <canvas id="canvas" width="1600" height="600"></canvas>
+        <div id="result">Draw a shape on the left and mirror it on the right!</div>
+        <button id="reset-btn">Reset</button>
     </div>
 
     <script>
         const canvas = document.getElementById('canvas');
         const ctx = canvas.getContext('2d');
-        const resetBtn = document.getElementById('resetBtn');
-        const result = document.getElementById('result');
+        const resultDiv = document.getElementById('result');
+        const resetBtn = document.getElementById('reset-btn');
         
         let isDrawing = false;
-        let lastX = 0;
-        let lastY = 0;
-        
-        drawSymmetryLine();
-        drawLeftShape();
-        canvas.addEventListener('mousedown', startDrawing);
-        
-        canvas.addEventListener('mousemove', draw);
-        
-        canvas.addEventListener('mouseup', stopDrawing);
-        
-        canvas.addEventListener('mouseout', stopDrawing);
-        
-        resetBtn.addEventListener('click', () => {
-            ctx.clearRect(canvas.width / 2, 0, canvas.width / 2, canvas.height);
-            result.textContent = '';
-            drawSymmetryLine();
-            drawLeftShape();
-        });
-
-        function startDrawing(e) {
-            if (e.offsetX < canvas.width / 2) return;
-            isDrawing = true;
-            [lastX, lastY] = [canvas.width / 2, 0];
-            ctx.clearRect(canvas.width / 2, 0, canvas.width / 2, canvas.height);
-        }
-
-        function draw(e) {
-            if (!isDrawing) return;
-            if (e.offsetX < canvas.width / 2) return;
-            ctx.beginPath();
-            ctx.moveTo(lastX, lastY);
-            ctx.lineTo(e.offsetX, e.offsetY);
-            ctx.strokeStyle = "Green"
-            ctx.lineWidth = 2
-            ctx.stroke();
-            [lastX, lastY] = [e.offsetX, e.offsetY];
-
-            const similarity = calculateSymmetry();
-            result.textContent = `Symmetry: ${similarity.toFixed(2)}%`;
-        }
-
-        function stopDrawing() {
-            isDrawing = false;
-        }
+        let points = []
+        let Lpoints = []
 
         function drawSymmetryLine() {
             ctx.beginPath();
@@ -108,64 +65,117 @@
             ctx.lineWidth = 3
             ctx.stroke();
         }
+        function clearall() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            drawSymmetryLine();
+            let points = []
+            let Lpoints = []
+        }
+        drawSymmetryLine();
 
-        function drawLeftShape() {
-            const radius = canvas.height / 2;
-            const centerX = canvas.width / 2;
-            const centerY = canvas.height / 2;
-            ctx.beginPath();
-            ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
-            ctx.strokeStyle = "Red"
-            ctx.lineWidth = 2
-            ctx.stroke();
-            ctx.clearRect(centerX, 0, canvas.width / 2, canvas.height);
+        canvas.addEventListener('mousedown', startDrawing);
+        
+        canvas.addEventListener('mousemove', draw);
+        
+        canvas.addEventListener('mouseup', () => {
+            isDrawing = false
+            calculateSymmetry()
+        });
+        
+        canvas.addEventListener('mouseout', () => {
+            isDrawing = false
+            calculateSymmetry()
+        });
+        
+        resetBtn.addEventListener('click', () => {
+            clearall()
+            isDrawing = false
+            result.textContent = 'Draw a shape on the left and mirror it on the right!';
+        });
+
+
+        function startDrawing(e) {
+            if (e.offsetX <= canvas.width / 2) {
+                isDrawing = true;
+                clearall()
+            } else { result.textContent = 'Draw on the left!'}
         }
 
-        function calculateSymmetry() {
-            const leftOutline = calculateShapeOutline(0, 0, canvas.width / 2, canvas.height);
-            const rightOutline = calculateShapeOutline(canvas.width / 2, 0, canvas.width / 2, canvas.height);
+        function draw(e) {
+            if (!isDrawing) return;
 
+            const x = e.offsetX
+            const y = e.offsetY
 
-            const similarity = compareOutlines(leftOutline, rightOutline);
-            
-            return similarity;
-        }
-
-        function calculateShapeOutline(x, y, width, height) {
-            const imageData = ctx.getImageData(x, y, width, height);
-            const pixels = imageData.data;
-
-            let binaryImage = [];
-            for (let i = 0; i < pixels.length; i += 4) {
-                const alpha = pixels[i + 3];
-                if (alpha !== 0) {
-                    binaryImage.push(1);
-                } else {
-                    binaryImage.push(0);
+            if (x < canvas.width / 2) {
+                Lpoints.push({x,y});
+                ctx.clearRect(canvas.width / 2,canvas.height / 2, 0, 0);
+                ctx.beginPath();
+                ctx.moveTo(Lpoints[0].x, Lpoints[0].y);
+                for (let i = 1; i < Lpoints.length; i++) {
+                    ctx.lineTo(Lpoints[i].x, Lpoints[i].y);
                 }
-            }
-
-            const outline = simplifyOutline(binaryImage, width, height);
-
-            return outline;
-        }
-
-        function compareOutlines(leftOutline, rightOutline) {
-            let matchingPixels = 0;
-            for (let i = 0; i < leftOutline.length; i++) {
-                if (leftOutline[i] === rightOutline[i]) {
-                    matchingPixels++;
+                ctx.strokeStyle = "Red"
+                ctx.lineWidth = 2
+                ctx.stroke();
+                drawSymmetryLine();
+            } else if (x > canvas.width / 2) {
+                points.push({x,y});
+                ctx.clearRect(canvas.width / 2,canvas.height / 2, canvas.width, canvas.height);
+                ctx.beginPath();
+                ctx.moveTo(points[0].x, points[0].y);
+                for (let i = 1; i < points.length; i++) {
+                    ctx.lineTo(points[i].x, points[i].y);
                 }
+                ctx.strokeStyle = "Green"
+                ctx.lineWidth = 2
+                ctx.stroke();
+                drawSymmetryLine();
             }
-
-            const similarity = (matchingPixels / leftOutline.length) * 100;
-            return similarity;
+            if (x < (canvas.width / 2) +1 && points.length > 2) {
+                isDrawing = false
+                calculateSymmetry()
+            }
+            const symmetryp = calculateSymmetry();
+            result.textContent = `Symmetry: ${symmetryp.toFixed(2)}%`;
         }
 
-        function simplifyOutline(binaryImage, width, height) {
-            return binaryImage;
-        }
 
+    function calculateSymmetry() {
+    const sumnum = 0
+    const ilength = 0
+    const size = 0
+    const yValues = new Map();
+    const rValues = new Map()
+    // Group coordinates from arr1 by their y-values and sum their x-coordinates
+    Lpoints.forEach(([x, y]) => {
+        if (yValues.has(y)) {
+            yValues.set(y, yValues.get(y) + x);
+        } else {
+            yValues.set(y, x);
+        }
+    });
+    
+    // Compare x-coordinates from arr2 with the same y-value
+    points.forEach(([x, y]) => {
+        if (rValues.has(y)) {
+            rValues.set(y, rValues.get(y) + x);
+        } else {
+            rValues.set(y, x);
+        }
+    });
+    
+    rValues.forEach(([y, x]) => {
+        if (yValues.has(y)) {
+            const leftX = Math.abs(canvas.width / 2 - yValues.get(y));
+            const rightX = Math.abs(rValues.get(y) - canvas.width / 2);
+            let size =+ rightX
+            let sumnum =+ Math.abs(leftX - rightX)
+            let ilength =+ 1
+        } else return;
+    });
+    return Math.max(0, 100 - ((sumnum/size)/ilength)*100);
+        }
     </script>
 </body>
 </html>
