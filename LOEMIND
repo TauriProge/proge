@@ -1,0 +1,13 @@
+Vaja: Python 3, veebilehitseja 
+Installige Pythonisse (VSC) flask
+
+
+1. Jooksutage faili home.py, mis avab brauseris veebilehe 
+2. Saate valida kodulehel ühte kahest mängust: 1 - ringimäng 2 - sümmeetriamäng
+  2.1 Ringimängu eesmärgiks on joonestada võimalikult perfektne aka visuaalselt ideaalne ja raadiustelt võrdne ring oma hiirt kasutades, klõpsates vasaku hiireklahvi peale
+   2.1.1 Ringi joonistamisel on mitmeid limitatsioone - liiga kaua ei tohi joonistada, liiga ruttu ei tohi joonistada, raadiused ei tohi liialt teineteisest erineda
+    2.1.2 Uuesti joonistamiseks hakake uuesti 'canvasele' joonistama või vajutage reset nuppu ning joonistage uus ring
+  2.2 Sümmeetriamängu eesmärgiks on joonistada keskteljest mõlemale poole sarnane e sümmeetriline kujund hiire abil
+    2.2.1 samamoodi saad hakata uuesti mängima nagu ringimängu
+
+3. Proovige saada 100% skoor :D  
