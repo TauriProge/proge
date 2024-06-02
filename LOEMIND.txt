@@ -3,9 +3,10 @@ Installige Pythonisse (VSC) flask
 
 (Mängu lingua francaks on inglise keel - mäng on inglise keeles)
 1. Jooksutage faili home.py, mis avab brauseris veebilehe 
-2. Saate valida kodulehel ühte kahest mängust: 1 - ringimäng 2 - sümmeetriamäng
-  2.1 Ringimängu eesmärgiks on joonestada võimalikult perfektne aka visuaalselt ideaalne ja raadiustelt võrdne ring oma hiirt kasutades, klõpsates vasaku hiireklahvi peale. Ringi joonistamisel on mitmeid limitatsioone - liiga kaua ei tohi joonistada, liiga ruttu ei tohi joonistada, raadiused ei tohi liialt teineteisest erineda. Uuesti joonistamiseks hakake uuesti 'canvasele' joonistama või vajutage reset nuppu ning joonistage uus ring
-  2.2 Sümmeetriamängu eesmärgiks on joonistada keskteljest mõlemale poole sarnane e sümmeetriline kujund hiire abil. Samamoodi saad hakata uuesti mängima nagu ringimängu. Sümmetrilist kujundit joonestades tuleb arvestada, et tuleb alustada vasakult ning hiireklahvi ei tohi paremale keskteljest üle minnes lahti lasta. Samuti ütleb mäng, et joonista sümmeetriline kujund, kui paremal pool joonestatud joone y- koordinaadid erinevad liigselt vasaku poole omast.
+2. Nautige muusikat
+3. Saate valida kodulehel ühte kahest mängust: 1 - ringimäng 2 - sümmeetriamäng
+  3.1 Ringimängu eesmärgiks on joonestada võimalikult perfektne aka visuaalselt ideaalne ja raadiustelt võrdne ring oma hiirt kasutades, klõpsates vasaku hiireklahvi peale. Ringi joonistamisel on mitmeid limitatsioone - liiga kaua ei tohi joonistada, liiga ruttu ei tohi joonistada, raadiused ei tohi liialt teineteisest erineda. Uuesti joonistamiseks hakake uuesti 'canvasele' joonistama või vajutage reset nuppu ning joonistage uus ring
+  3.2 Sümmeetriamängu eesmärgiks on joonistada keskteljest mõlemale poole sarnane e sümmeetriline kujund hiire abil. Samamoodi saad hakata uuesti mängima nagu ringimängu. Sümmetrilist kujundit joonestades tuleb arvestada, et tuleb alustada vasakult ning hiireklahvi ei tohi paremale keskteljest üle minnes lahti lasta. Samuti ütleb mäng, et joonista sümmeetriline kujund, kui paremal pool joonestatud joone y- koordinaadid erinevad liigselt vasaku poole omast.
 
 
-3. Proovige saada 100% skoor :D  
+4. Proovige saada 100% skoor :D  
