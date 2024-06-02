@@ -10,6 +10,7 @@
 <body>
     <div class="header">
         <h1>SymmetryQuest: CircleCraft</h1>
+        <input type="range" id="volume-control">
     </div>
     <div class="row">
         <div class="column">
@@ -27,5 +28,12 @@
         <source src="{{ url_for('static', filename='kodumuusika.mp3') }}" type="audio/mpeg">
      
     </audio>
+    <script>
+        let audio = document.getElementById("background-music");
+        let volumeControl = document.getElementById("volume-control");
+        volumeControl.addEventListener("input", function(e) {
+            audio.volume = e.currentTarget.value / 100;
+        })
+    </script>
 </body>
 </html>

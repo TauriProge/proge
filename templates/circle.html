@@ -37,12 +37,12 @@
     <div class="header">    
         <h1>CircleCraft</h1>
         <p><a href="{{ url_for('index') }}">Back to home</a></p>
+        <input type="range" id="volume-control">
     </div>
 
     <!-- Taustamuusika -->
     <audio id="background-music" autoplay loop>
         <source src="{{ url_for('static', filename='ringimuusika.mp3') }}" type="audio/mp3">
-       
     </audio>
 
     <canvas id="canvas" width=1500 height=600></canvas>
@@ -51,6 +51,11 @@
     <button id="reset-btn">Reset</button>
     
     <script>
+        let audio = document.getElementById("background-music");
+        let volumeControl = document.getElementById("volume-control");
+        volumeControl.addEventListener("input", function(e) {
+            audio.volume = e.currentTarget.value / 100;
+        })
         // Konstandid
         const canvas = document.getElementById('canvas');
         const ctx = canvas.getContext('2d');
