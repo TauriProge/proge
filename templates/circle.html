@@ -45,7 +45,7 @@
     <button id="reset-btn">Reset</button>
     
     <script>
-
+        // Konstandid
         const canvas = document.getElementById('canvas');
         const ctx = canvas.getContext('2d');
         const resultDiv = document.getElementById('result');
@@ -54,112 +54,113 @@
 
         let isDrawing = false;
         let points = [];
-
+        // Funktsiooni canvas'e puhastamiseks
         function clearall() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             points = []
             startp = null
             isDrawing = false
         }
+        // Hiire vajutamisel alustab joonistamist ja salvestab algpunkti
         canvas.addEventListener('mousedown', (e) => {
             isDrawing = true;
             const x = e.offsetX;
             const y = e.offsetY;
             startp = { x, y };
         });
-        
+        // Hiire liigutamisel joonistab
         canvas.addEventListener('mousemove', draw);
-        
+        // Hiire vajutamise lõpetamisel lõpetab joonistamise ning kui on vähemalt 2 punkti joonistatud siis arvutab perfektsuse
         canvas.addEventListener('mouseup', () => {
             isDrawing = false;
             if (points.length > 1){
                 calculatePerfectness();
             }
         });
-
+        // Kui hiir lahkub canvas'est, lõpetab joonistamise
         canvas.addEventListener('mouseout', () => {
             isDrawing = false;
-            if (points.length >= 20) {
+            if (points.length >= 20) {  // Kui ring on piisavalt suur, siis arvutab selle perfektsuse
             calculatePerfectness();
-            }
-            if (points.length > 0 && points.length < 20) {
+            } 
+            if (points.length > 0 && points.length < 20) { // Kui ring on liiga väike, siis hoiatab mängijat
                 resultDiv.textContent = "Don't draw outside the border!";
                 clearall()
             }
         });
-        
+        // Reset nupp reset'ib
         resetBtn.addEventListener('click', () => {
             clearall()
             resultDiv.textContent = '';
         });
-        
+        // Leiab kõikide punktide massikeskme
         function findCenter(points) {
-            const x = points.reduce((total, point) => total + point.x, 0) / points.length;
-            const y = points.reduce((total, point) => total + point.y, 0) / points.length;
+            const x = points.reduce((total, point) => total + point.x, 0) / points.length; // Liidab kõik x'id ja jagab nende arvuga
+            const y = points.reduce((total, point) => total + point.y, 0) / points.length; // Liidab kõik y'id ja jagab nende arvuga
             return { x, y };
         }
 
-        function draw(e) {
+        function draw(e) { // Joonistamise funktsioon
             if (!isDrawing) return;
-
-            const x = e.offsetX;
+            // Hiire koordinaadid
+            const x = e.offsetX; 
             const y = e.offsetY;
-            
+            // Lisab hiire koordinaadid list'i
             points.push({ x, y });
-            //Replikatsioon calculateSymmetry'st et leida pidevalt avgRadius
+            //Replikatsioon calculateSymmetry()'st, et leida pidevalt avgRadius
             const center = findCenter(points);
             const distances = points.map(point => Math.sqrt(Math.pow(center.x - point.x, 2) + Math.pow(center.y - point.y, 2)));
             const avgRadius = distances.reduce((total, distance) => total + distance, 0) / distances.length;
-
+            // Joonistab joonistatud joone
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             ctx.beginPath();
             ctx.moveTo(points[0].x, points[0].y);
-            for (let i = 1; i < points.length; i++) {
+            for (let i = 1; i < points.length; i++) { // Joonistab iga punkti vahele joone
                 ctx.lineTo(points[i].x, points[i].y);
             }
             ctx.closePath();
-            ctx.strokeStyle = "Green"
+            ctx.strokeStyle = "Green" // Stiil
             ctx.lineWidth = 2
             ctx.stroke();
-
+            // Kui ringi raadius on väiksem kui 13 selleks hetkeks kui ringil on joonistatud 30 punkti, hoiatab mängijat
             if (avgRadius < 13 && points.length > 30){
             resultDiv.textContent = "Draw a bigger circle, faster!";
             clearall()
             return;
         }
-            // Vaatab, kas kursor on lähedal algpunktile ja autocalculate'b
+            // Vaatab, kas kursor on lähedal algpunktile
             const endvec = Math.sqrt(Math.pow(startp.x - x, 2) + Math.pow(startp.y - y, 2));
-            if (endvec <= 20 && avgRadius > 30) {
+            if (endvec <= 15 && avgRadius > 30) { // Kui algpunkti ja kursori vahe väiksem kui 10 ja ringi raadius suurem kui 30
                 isDrawing = false;
-                calculatePerfectness();
+                calculatePerfectness(); // Kalkuleerib LMB tõstmata ringi perfektsuse
                 return;
             }
         }
 
-        function calculatePerfectness() {
-            if (points.length <= 20) {
+        function calculatePerfectness() { // Ringi perfektsuse arvutamis funktsioon
+            if (points.length <= 20) { // Kui ringil on liiga vähe punkte ja seega arvutus ebatäpne, hoiatab kasutajat
                 resultDiv.textContent = "Draw for longer!";
                 clearall()
                 return;
             } 
             const center = findCenter(points);
-            //Leiab raadiuse pikkuse
+            //Leiab raadiuse pikkuse (Pythagoras)
             const distances = points.map(point => Math.sqrt(Math.pow(center.x - point.x, 2) + Math.pow(center.y - point.y, 2)));
             //Leiab keskmise raadiuse
             const avgRadius = distances.reduce((total, distance) => total + distance, 0) / distances.length;
-            // Deviatasiooni kaudu perfectness
-            const deviation = Math.sqrt(distances.reduce((total, distance) => total + Math.pow(distance - avgRadius, 2), 0) / distances.length);
-            if (avgRadius <= 32) {
+            // Deviatasiooni kaudu perfectness (Standardhälve)
+            const deviation = Math.sqrt(distances.reduce((total, distance) => total + Math.pow(distance - avgRadius, 2), 0) / (distances.length-1));
+            if (avgRadius <= 32) { // Kui ring on liiga väike ja seega punktid üksteisele liiga lähedal mõjutades arvutust, hoiatab mängijat
                 resultDiv.textContent = "Draw a bigger circle!";
                 clearall()
                 return;
             } 
-            // Perfektne ring
+            // Joonistab teoreetilise perfektse ringi
             ctx.beginPath();
             ctx.strokeStyle = 'red';
             ctx.arc(points.reduce((total, point) => total + point.x, 0) / points.length, points.reduce((total, point) => total + point.y, 0) / points.length,avgRadius, 0, Math.PI * 2)
             ctx.stroke();
-            //Debug jooned
+            //Debug jooned (Joonistab algpunktist igasse punkti joone, kujutab paremini mitu punkti kokku joonistati)
             // ctx.beginPath();
             // ctx.strokeStyle = 'red';
             // points.forEach(point => {
@@ -168,10 +169,11 @@
             //     });
             //     ctx.stroke();
                 
-            const perfectness = Math.max(0,100 - deviation)
+            const perfectness = Math.max(0,100 - deviation) // Range versioon ringi perfektsuse arvutamisest (0% võimalik)
 
-            resultDiv.textContent = `Perfectness: ${perfectness.toFixed(2)}%`;
-            points = []
+            resultDiv.textContent = `Perfectness: ${perfectness.toFixed(2)}%`; // 2 komakohaga protsent
+            // Tühjendab informatsiooni, kuid hoiab joonistuse alles
+            points = []     
             startp = null
             isDrawing = false
         }
