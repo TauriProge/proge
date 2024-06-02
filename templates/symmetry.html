@@ -46,7 +46,11 @@
         <div id="result">Draw a shape on the left and mirror it on the right!</div>
         <button id="reset-btn">Reset</button>
     </div>
-
+<!-- Audio Element for Background Music -->
+<audio id="background-music" autoplay loop>
+    <source src="{{ url_for('static', filename='symmetrymuusika.mp3') }}" type="audio/mp3">
+   
+</audio>
     <script>
         // Konstandid
         const canvas = document.getElementById('canvas');
