@@ -10,7 +10,6 @@
         .cent {
             text-align: center;
         }
-
         #canvas {
             border: 3px double rgb(11, 230, 58);
             margin: 20px auto;
@@ -41,6 +40,7 @@
             <h1>SymmetryQuest</h1>
             <p><a href="{{ url_for('index') }}">Back to home</a></p>
             <input type="range" id="volume-control">
+            <span class="music-icon" id="music-icon">&#9835;</span>
         </div>
     
         <canvas id="canvas" width="1000" height="600"></canvas>

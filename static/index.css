@@ -57,8 +57,22 @@ a:hover, a:active {
     border: 3px solid #3e6c99;
     border-radius: 10px;
     margin-bottom: 1vw;
+    position: relative;
 }
 
+#volume-control {
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+#music-icon {
+    position: absolute;
+    right: 170px;
+    top: 52%;
+    transform: translateY(-50%);
+}
 .cir {
     font-weight: bold;
     color: blue;

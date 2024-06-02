@@ -31,6 +31,21 @@ a:hover, a:active {
     padding-bottom: 0px;
     margin-top: 0px;
     margin-bottom: 0px;
+    position: relative;
+}
+
+#volume-control {
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+#music-icon {
+    position: absolute;
+    right: 170px;
+    top: 52%;
+    transform: translateY(-50%);
 }
 
 h1 {
