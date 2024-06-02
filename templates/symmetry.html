@@ -101,9 +101,10 @@
             const diffRminLmax = Math.abs(LpointsMinMaxY.maxY - pointsMinMaxY.minY);
             const diffRmaxLmin = Math.abs(pointsMinMaxY.maxY - LpointsMinMaxY.minY);
             const diffLy = Math.abs(LpointsMinMaxY.maxY - LpointsMinMaxY.minY);
+            const diffRy = Math.abs(pointsMinMaxY.maxY - pointsMinMaxY.minY);
             console.log(pointsMinMaxY, LpointsMinMaxY)
             console.log(diffRminLmax, diffRmaxLmin, diffLy)
-            if (diffLy > diffRminLmax * 1.25 || diffLy > diffRmaxLmin * 1.25) { // Adjust the multiplier as needed
+            if (diffLy > diffRminLmax * 1.25 || diffLy > diffRmaxLmin * 1.25 || diffRy > 1.25 * diffLy) { // Adjust the multiplier as needed
                 result.textContent = 'Draw the object symmetrically!';
             } else {
                 calculateSymmetry();
@@ -131,6 +132,7 @@
             if (e.offsetX <= canvas.width / 2) {
                 isDrawing = true;
                 clearall()
+                result.textContent = 'Draw a shape on the left and mirror it on the right!'
             } else { result.textContent = 'Draw on the left!'}
         }
 
