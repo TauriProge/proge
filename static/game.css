@@ -4,7 +4,6 @@ body {
     color: #ecf0f1;
 }
 
-/* Links Styles */
 a:link, a:visited {
     text-decoration: none;
     display: inline-block;
@@ -21,7 +20,6 @@ a:hover, a:active {
     color: #2c3e50;
 }
 
-/* Header Styles */
 .header {
     background-color: #34495e;
     text-align: center;
@@ -36,7 +34,6 @@ h1 {
     color: #ecf0f1;
 }
 
-/* Canvas Styles */
 #canvas {
     border: 5px solid #7f8c8d;
     margin: 20px auto;
@@ -53,7 +50,7 @@ h1 {
     font-family: 'Orbitron', sans-serif;
 }
 
-/* Reset Button */
+
 #reset-btn {
     display: block;
     margin: 20px auto;
