@@ -224,14 +224,25 @@
 
                 // Deviatsioon
                 let deviation = Math.abs(leftDeviation - rightDeviation); // X'ide vahe
-                if (leftDeviation > 80 && rightDeviation > 59) {
-                    deviation *= 0.8
+                // Teeb nii, et suuremate jooniste deviatsioonid on väiksemad, muidu ebatäpne
+                if (leftDeviation > 400 && rightDeviation > 390 || leftDeviation > 390 && rightDeviation > 400) {
+                    deviation *= 0.2
                 }
+                else if (leftDeviation > 250 && rightDeviation > 240 || leftDeviation > 240 && rightDeviation > 250) {
+                    deviation *= 0.4
+                }
+                else if (leftDeviation > 100 && rightDeviation > 90 || leftDeviation > 90 && rightDeviation > 100) {
+                    deviation *= 0.75
+                } 
+                else if (leftDeviation > 50 && rightDeviation > 40 || leftDeviation > 40 && rightDeviation > 50) {
+                    deviation *= 0.82
+                }
+
                 if (deviation > 20) {  // Määrab kui suur peaks deviatsiooni osakaal olema olenevalt deviatsiooni suurusest
-                    totalDeviation += deviation * 0.7; // selleks, et suuremad deviatsioonid ei rikuks kogu % ära
+                    totalDeviation += deviation * 0.54; // selleks, et suuremad deviatsioonid ei rikuks kogu % ära
                 } else if (deviation > 13) {
-                    totalDeviation += deviation * 0.8
-                } else {totalDeviation += deviation * 0.9}
+                    totalDeviation += deviation * 0.69
+                } else {totalDeviation += deviation * 0.8}
                 ilength += 1;
             }
         });
