@@ -42,7 +42,7 @@
             <p><a href="{{ url_for('index') }}">Back to home</a></p>
         </div>
     
-        <canvas id="canvas" width="1600" height="600"></canvas>
+        <canvas id="canvas" width="1000" height="600"></canvas>
         <div id="result">Draw a shape on the left and mirror it on the right!</div>
         <button id="reset-btn">Reset</button>
     </div>
@@ -77,13 +77,41 @@
         canvas.addEventListener('mousedown', startDrawing);
         // Hiire liigutamisel joonistab
         canvas.addEventListener('mousemove', draw);
+
+        function minmaxY(list) { // Leiab punktide listis oleva miinimum ja maksimum y väärtuse
+            let minY = Infinity;
+            let maxY = -Infinity;
+
+            list.forEach(({ x, y }) => {
+                if (y < minY) {
+                    minY = y; // Uuendab minY väärtuse kui y on väiksem
+                }
+                if (y > maxY) {
+                    maxY = y; // Uuendab maxY väärtuse kui y on suurem
+                }
+            });
+            return { minY, maxY };
+        }
+
         // Hiire vajutamise lõpetamisel lõpetab joonistamise ja tühjendab punktid
         canvas.addEventListener('mouseup', () => {
-            isDrawing = false
-            calculateSymmetry()
-            points = []
-            Lpoints = []
+            isDrawing = false;
+            const pointsMinMaxY = minmaxY(points);
+            const LpointsMinMaxY = minmaxY(Lpoints);
+            const diffRminLmax = Math.abs(LpointsMinMaxY.maxY - pointsMinMaxY.minY);
+            const diffRmaxLmin = Math.abs(pointsMinMaxY.maxY - LpointsMinMaxY.minY);
+            const diffLy = Math.abs(LpointsMinMaxY.maxY - LpointsMinMaxY.minY);
+            console.log(pointsMinMaxY, LpointsMinMaxY)
+            console.log(diffRminLmax, diffRmaxLmin, diffLy)
+            if (diffLy > diffRminLmax * 1.25 || diffLy > diffRmaxLmin * 1.25) { // Adjust the multiplier as needed
+                result.textContent = 'Draw the object symmetrically!';
+            } else {
+                calculateSymmetry();
+            }
+            points = [];
+            Lpoints = [];
         });
+
         // Hiire lahkumisel canvas'est
         canvas.addEventListener('mouseout', () => {
             isDrawing = false
@@ -116,7 +144,7 @@
                 isDrawing = false
                 calculateSymmetry()
             }
-            if (x < canvas.width / 2) { // Kui joonistad vasakul, paneb hiire punktid list'i
+            else if (x < canvas.width / 2) { // Kui joonistad vasakul, paneb hiire punktid list'i
                 Lpoints.push({x,y});
                 // Joonistab iga punkti vahele joone
                 ctx.clearRect(canvas.width / 2,canvas.height / 2, 0, 0); 
@@ -193,11 +221,14 @@
                 const rightDeviation = Math.abs(rightX - canvas.width / 2);
 
                 // Deviatsioon
-                const deviation = Math.abs(leftDeviation - rightDeviation); // X'ide vahe
+                let deviation = Math.abs(leftDeviation - rightDeviation); // X'ide vahe
+                if (leftDeviation > 80 && rightDeviation > 59) {
+                    deviation *= 0.8
+                }
                 if (deviation > 20) {  // Määrab kui suur peaks deviatsiooni osakaal olema olenevalt deviatsiooni suurusest
-                    totalDeviation += deviation * 0.5; // selleks, et suuremad deviatsioonid ei rikuks kogu % ära
+                    totalDeviation += deviation * 0.7; // selleks, et suuremad deviatsioonid ei rikuks kogu % ära
                 } else if (deviation > 13) {
-                    totalDeviation += deviation * 0.75
+                    totalDeviation += deviation * 0.8
                 } else {totalDeviation += deviation * 0.9}
                 ilength += 1;
             }
