@@ -54,7 +54,7 @@ a:hover, a:active {
     padding: 20px;
     text-align: center;
     font-size: larger;
-    border: 3px solid #2c3e50;
+    border: 3px solid #3e6c99;
     border-radius: 10px;
     margin-bottom: 1vw;
 }
@@ -69,11 +69,11 @@ a:hover, a:active {
     border-radius: 2px;
     border-style: double;
     background-image: url("ringSUS.png");
-    background-repeat: no-repeat;
+    background-repeat: repeat;
     background-position: center;
     background-attachment: scroll;
-    background-size: cover;
-    background-position-y: top;
+    background-size: 70%;
+    background-position-y: center;
 }
 .sym {
     font-weight: bold;
@@ -85,9 +85,9 @@ a:hover, a:active {
     border-radius: 2px;
     border-style: double;
     background-image: url("symmetry.png");
-    background-repeat: no-repeat;
+    background-repeat: repeat;
     background-position: center;
     background-attachment: scroll;
-    background-size: cover;
-    background-position-y: -30px;
+    background-size: 70%;
+    background-position-y: -120px;
 }

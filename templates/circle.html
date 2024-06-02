@@ -73,7 +73,7 @@
             })
             .then(response => response.json())
             .then(data => {
-                highScoreDiv.textContent = `High Score: ${data.high_score}%`;
+                highScoreDiv.textContent = `High Score: ${data.high_score.toFixed(2)}%`;
             });
         }
 
@@ -91,7 +91,7 @@
             .then(response => response.json())
             .then(data => {
                 if (data.new_high_score) {
-                    highScoreDiv.textContent = `High Score: ${data.high_score}%`;
+                    highScoreDiv.textContent = `High Score: ${data.high_score.toFixed(2)}%`;
                     resultDiv.textContent += " New High Score!";
                 }
             });
