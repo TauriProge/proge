@@ -1,7 +1,7 @@
 Vaja: Python 3, veebilehitseja 
 Installige Pythonisse (VSC) flask
 
-
+(Mängu lingua francaks on inglise keel - mäng on inglise keeles)
 1. Jooksutage faili home.py, mis avab brauseris veebilehe 
 2. Saate valida kodulehel ühte kahest mängust: 1 - ringimäng 2 - sümmeetriamäng
   2.1 Ringimängu eesmärgiks on joonestada võimalikult perfektne aka visuaalselt ideaalne ja raadiustelt võrdne ring oma hiirt kasutades, klõpsates vasaku hiireklahvi peale
