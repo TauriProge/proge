@@ -38,10 +38,16 @@
         <h1>CircleCraft</h1>
         <p><a href="{{ url_for('index') }}">Back to home</a></p>
     </div>
-    
-    
-    <canvas id="canvas" width= 1500 height= 600></canvas>
+
+    <!-- Audio Element for Background Music -->
+    <audio id="background-music" autoplay loop>
+        <source src="{{ url_for('static', filename='ringimuusika.mp3') }}" type="audio/mp3">
+       
+    </audio>
+
+    <canvas id="canvas" width=1500 height=600></canvas>
     <div id="result"></div>
+    <div id="high-score">High Score: 0%</div>
     <button id="reset-btn">Reset</button>
     
     <script>
@@ -50,10 +56,46 @@
         const ctx = canvas.getContext('2d');
         const resultDiv = document.getElementById('result');
         const resetBtn = document.getElementById('reset-btn');
+        const highScoreDiv = document.getElementById('high-score');
         startp = null
 
         let isDrawing = false;
         let points = [];
+
+         // Võtab praeguse high score'i
+         function fetchHighScore() {
+            fetch("/update_score", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ score: 0 })  // Send a score of 0 to fetch the current high score
+            })
+            .then(response => response.json())
+            .then(data => {
+                highScoreDiv.textContent = `High Score: ${data.high_score}%`;
+            });
+        }
+
+        fetchHighScore();
+
+        // Function to update the high score
+        function updateHighScore(score) {
+            fetch("/update_score", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ score: score })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.new_high_score) {
+                    highScoreDiv.textContent = `High Score: ${data.high_score}%`;
+                    resultDiv.textContent += " New High Score!";
+                }
+            });
+        }
         // Funktsiooni canvas'e puhastamiseks
         function clearall() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -93,7 +135,7 @@
             clearall()
             resultDiv.textContent = '';
         });
-        // Leiab kõikide punktide massikeskme
+        // Leiab kõikide punktide asendikeskme
         function findCenter(points) {
             const x = points.reduce((total, point) => total + point.x, 0) / points.length; // Liidab kõik x'id ja jagab nende arvuga
             const y = points.reduce((total, point) => total + point.y, 0) / points.length; // Liidab kõik y'id ja jagab nende arvuga
@@ -172,6 +214,7 @@
             const perfectness = Math.max(0,100 - deviation) // Range versioon ringi perfektsuse arvutamisest (0% võimalik)
 
             resultDiv.textContent = `Perfectness: ${perfectness.toFixed(2)}%`; // 2 komakohaga protsent
+            updateHighScore(perfectness);
             // Tühjendab informatsiooni, kuid hoiab joonistuse alles
             points = []     
             startp = null
