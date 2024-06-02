@@ -69,7 +69,7 @@
                 headers: {
                     "Content-Type": "application/json"
                 },
-                body: JSON.stringify({ score: 0 })  // Send a score of 0 to fetch the current high score
+                body: JSON.stringify({ score: 0 })  // Saadab 0 high score, et seda fetchida
             })
             .then(response => response.json())
             .then(data => {
@@ -79,7 +79,7 @@
 
         fetchHighScore();
 
-        // Function to update the high score
+        // High score värskendamise funktsioon
         function updateHighScore(score) {
             fetch("/update_score", {
                 method: "POST",
