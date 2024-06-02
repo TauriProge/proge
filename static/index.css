@@ -16,6 +16,7 @@ a:link, a:visited {
     border: 2px solid #7f8c8d;
     border-radius: 5px;
     color: #ecf0f1;
+    text-align: center;
 }
 
 a:hover, a:active {
@@ -26,9 +27,11 @@ a:hover, a:active {
 .column {
     float: none;
     width: 70%;
-    padding: 100px;
-    margin: 10% auto;
-    margin-top: auto;
+    padding: 5vw;
+    padding-top: 3vw;
+    padding-bottom: 3vw;
+    margin: auto;
+    margin-top: 3vw;
     background-color: #34495e;
     border: 3px solid #7f8c8d;
     border-radius: 10px;
@@ -53,14 +56,14 @@ a:hover, a:active {
     font-size: larger;
     border: 3px solid #2c3e50;
     border-radius: 10px;
+    margin-bottom: 1vw;
 }
 
 .cir {
     font-weight: bold;
     color: blue;
     font-size: 1.5vw;
-    text-align: top;
-    margin-left: 2vw;
+    text-align: center;
     background-color: antiquewhite;
     border-color: black;
     border-radius: 2px;
@@ -76,8 +79,7 @@ a:hover, a:active {
     font-weight: bold;
     color: blue;
     font-size: 1.5vw;
-    text-align: top;
-    margin-right: 2vw;
+    text-align: center;
     background-color: antiquewhite;
     border-color: black;
     border-radius: 2px;
