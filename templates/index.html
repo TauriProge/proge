@@ -6,6 +6,7 @@
     <title>SymmetryQuest: CircleCraft</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&display=swap" rel="stylesheet">
+
 </head>
 <body>
     <div class="header">
@@ -15,6 +16,7 @@
     </div>
     <div class="row">
         <div class="column">
+            <div id="high-score">High Score: 0%</div>
             <div class="cir">
                 <h2><a href="{{ url_for('circle') }}">Go to CircleCraft</a></h2>
             </div>
@@ -27,7 +29,7 @@
     </div>
     <audio id="background-music" loop autoplay>
         <source src="{{ url_for('static', filename='kodumuusika.mp3') }}" type="audio/mpeg">
-     
+        
     </audio>
     <script>
         let audio = document.getElementById("background-music");
@@ -48,6 +50,21 @@
                 body: JSON.stringify({ volume: volume })
             });
         });
+
+        const highScoreDiv = document.getElementById('high-score');
+        // Võtab praeguse high score'i
+        function fetchHighScore() {
+            fetch("/update_score", {method: "POST", headers: {"Content-Type": "application/json"},
+                body: JSON.stringify({ score: 0 })  // Saadab 0 high score, et seda fetchida
+            })
+            .then(response => response.json())
+            .then(data => {
+                highScoreDiv.textContent = `High Score: ${data.high_score.toFixed(2)}%`;
+            });
+        }
+
+        fetchHighScore();
+
     </script>
 </body>
 </html>

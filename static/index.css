@@ -35,6 +35,7 @@ a:hover, a:active {
     background-color: #34495e;
     border: 3px solid #7f8c8d;
     border-radius: 10px;
+    position: relative
 }
 
 .row::after {
@@ -88,6 +89,16 @@ a:hover, a:active {
     background-attachment: scroll;
     background-size: 70%;
     background-position-y: center;
+}
+
+#high-score {
+    position: absolute;
+    transform: translateY(-50%);
+    left: 50%;
+    transform: translateX(-50%);
+    color: white;
+    font-size: 1vw;
+    padding: 2px;
 }
 .sym {
     font-weight: bold;
