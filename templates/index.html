@@ -32,9 +32,22 @@
     <script>
         let audio = document.getElementById("background-music");
         let volumeControl = document.getElementById("volume-control");
-        volumeControl.addEventListener("input", function(e) {
-            audio.volume = e.currentTarget.value / 100;
-        })
+
+        fetch("/get_volume") // Võtab helitugevuse eelmiselt lehelt
+            .then(response => response.json()) 
+            .then(data => {
+                let volume = data.volume;
+                audio.volume = volume / 100;
+                volumeControl.value = volume;
+            });
+        
+        volumeControl.addEventListener("input", function(e) { // Slaideri liigutamisel muudab heliväärtust
+            let volume = e.currentTarget.value;
+            audio.volume = volume / 100;
+            fetch("/update_volume", {method: "POST", headers: {"Content-Type": "application/json"}, // Uuendab serveri volume väärtust
+                body: JSON.stringify({ volume: volume })
+            });
+        });
     </script>
 </body>
 </html>
