@@ -106,6 +106,7 @@
         // Hiire vajutamise lõpetamisel lõpetab joonistamise ja tühjendab punktid
         canvas.addEventListener('mouseup', () => {
             isDrawing = false;
+            // Siin osas leiab vasaku, parema kujundi y koordinaatide erinevused
             const pointsMinMaxY = minmaxY(points);
             const LpointsMinMaxY = minmaxY(Lpoints);
             const diffRminLmax = Math.abs(LpointsMinMaxY.maxY - pointsMinMaxY.minY);
@@ -114,7 +115,8 @@
             const diffRy = Math.abs(pointsMinMaxY.maxY - pointsMinMaxY.minY);
             console.log(pointsMinMaxY, LpointsMinMaxY)
             console.log(diffRminLmax, diffRmaxLmin, diffLy)
-            if (diffLy > diffRminLmax * 1.25 || diffLy > diffRmaxLmin * 1.25 || diffRy > 1.25 * diffLy) { // Adjust the multiplier as needed
+            // Kui y koordinaatide erinevused vasakul ja paremal on liiga suured, siis sunnib sümmetrilisemalt joonistama
+            if (diffLy > diffRminLmax * 1.25 || diffLy > diffRmaxLmin * 1.25 || diffRy > 1.25 * diffLy) {
                 result.textContent = 'Draw the object symmetrically!';
             } else {
                 calculateSymmetry();
