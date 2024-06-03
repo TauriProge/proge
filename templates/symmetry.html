@@ -116,7 +116,11 @@
             console.log(pointsMinMaxY, LpointsMinMaxY)
             console.log(diffRminLmax, diffRmaxLmin, diffLy)
             // Kui y koordinaatide erinevused vasakul ja paremal on liiga suured, siis sunnib sümmetrilisemalt joonistama
-            if (diffLy > diffRminLmax * 1.25 || diffLy > diffRmaxLmin * 1.25 || diffRy > 1.25 * diffLy) {
+            if (diffLy < 10 && diffRmaxLmin < 10 && diffRminLmax <10) {
+                calculateSymmetry()
+                result.textContent += "     (It's best if you don't draw lines!)"
+            }
+            else if (diffLy > diffRminLmax * 1.25 || diffLy > diffRmaxLmin * 1.25 || diffRy > 1.25 * diffLy) {
                 result.textContent = 'Draw the object symmetrically!';
             } else {
                 calculateSymmetry();
