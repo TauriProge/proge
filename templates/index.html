@@ -11,8 +11,43 @@
 <body>
     <div class="header">
         <h1>SymmetryQuest: CircleCraft</h1>
+        <button id="info-btn"> ℹ️ </button>
         <input type="range" id="volume-control">
         <span class="music-icon" id="music-icon">&#9835;</span>
+    </div>
+    <div id="info-box" style="display: none;">
+        <h2>SymmetryQuest: CircleCraft</h2>
+        <h3>This game was created by Johann Sild and Tauri Tagu</h3>
+        <p>
+            <strong>CircleCraft:</strong><br>
+            The goal of the game is to draw as perfect of a circle as you can on the canvas.<br>
+            You can reset the canvas by clicking the reset button or by starting another drawing.<br>
+            Keep in mind that the game works best when you try to draw an actual circle!<br>
+            To force this rule, there are some things the program prevents you from drawing:<br>
+            - You can't draw outside the borders of the canvas.<br>
+            - You can't draw too slowly at the beginning of your drawing.<br>
+            - You can't draw a circle that is too small.<br>
+            - You can't draw a circle too fast.<br>
+            For comfort, if you connect your mouse to the beginning point of the circle, it automatically calculates.<br><br>
+        
+            <strong>SymmetryQuest:</strong><br>
+            The goal of the game is to draw one object on the left side of the symmetry line,<br>
+            and then mirror it on the right side of the symmetry line.<br>
+            Start on the left side of the canvas and keep holding your mouse down while you draw on the right side,<br>
+            when you are done, let go of the mouse.<br>
+            You can reset the canvas by clicking the reset button or by starting another drawing.<br>
+            Keep in mind that the game works best when you try to draw an object symmetrically on both sides!<br>
+            To force this rule, there are some things the program prevents you from drawing:<br>
+            - You must begin from the left side of the canvas.<br>
+            - You can't draw an object on only the left side of the canvas.<br>
+            - You can't draw outside the canvas.<br>
+            - Your object on one side has to be at least 0.8x in height of the object of the other side.<br>
+            - It is not suggested to draw lines, or to draw too far out on the canvas.<br>
+            <br>
+            <br>
+            2024
+        </p>
+        <button id="close-info-btn">✖</button>
     </div>
     <div class="row">
         <div class="column">
@@ -32,6 +67,21 @@
         
     </audio>
     <script>
+        const infoBtn = document.getElementById('info-btn');
+        const infoBox = document.getElementById('info-box');
+        const closeInfoBtn = document.getElementById('close-info-btn');
+
+        infoBtn.addEventListener('click', function() { // Näitab kasti nupu vajutusel
+            if (infoBox.style.display === 'none') {
+                infoBox.style.display = 'block';
+            } else {
+                infoBox.style.display = 'none';
+            }
+        }); 
+        closeInfoBtn.addEventListener('click', function() {
+            infoBox.style.display = 'none';
+        });
+
         let audio = document.getElementById("background-music");
         let volumeControl = document.getElementById("volume-control");
 
@@ -67,9 +117,7 @@
                 }
             });
         }
-
         fetchHighScore();
-
     </script>
 </body>
 </html>
