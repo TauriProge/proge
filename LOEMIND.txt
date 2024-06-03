@@ -6,6 +6,7 @@ Installige Pythonisse (VSC) flask
 1. Jooksutage faili home.py, mis avab brauseris veebilehe 
 2. Nautige muusikat
 3. Saate valida kodulehel ühte kahest mängust: 1 - CircleCraft (ringimäng 2) - SymmetryQuest (sümmeetriamäng)
+  3.0 Mängud töötavad kõige paremini, kui neid mängida nagu on ettemääratud.
   3.1 Ringimängu eesmärgiks on joonestada võimalikult perfektne aka visuaalselt ideaalne ja raadiustelt võrdne ring oma hiirt kasutades, klõpsates vasaku hiireklahvi peale. Ringi joonistamisel on mitmeid limitatsioone - aega ei tohi venitada, liiga ruttu ei tohi joonistamist lõpetada, peab joonistama piiride sees (šokeeriv). Uuesti joonistamiseks hakake uuesti lõuendile joonistama või vajutage reset nuppu ning joonistage uus ring
   3.2 Sümmeetriamängu eesmärgiks on joonistada keskteljest mõlemale poole sarnane e sümmeetriline kujund hiire abil. Mängu juures on oluline, et alustatakse vasakult poolelt ja jätkatakse paremale. Samamoodi saad hakata uuesti mängima nagu ringimängu. Sümmetrilist kujundit joonestades tuleb arvestada, et tuleb alustada vasakult ning hiireklahvi ei tohi paremale keskteljest üle minnes lahti lasta. Samuti ütleb mäng, et joonista sümmeetriline kujund, kui paremal pool joonestatud joone y- koordinaadid erinevad liigselt vasaku poole omast.
 
