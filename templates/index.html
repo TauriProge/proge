@@ -59,7 +59,12 @@
             })
             .then(response => response.json())
             .then(data => {
-                highScoreDiv.textContent = `High Score: ${data.high_score.toFixed(2)}%`;
+                if (data.high_score > 0) { // Näitab highscore ainult siis, kui see on suurem kui 0%
+                    highScoreDiv.textContent = `High Score: ${data.high_score.toFixed(2)}%`;
+                    highScoreDiv.style.display = "block";
+                } else {
+                    highScoreDiv.style.display = "none";
+                }
             });
         }
 
